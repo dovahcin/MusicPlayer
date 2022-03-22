@@ -1,4 +1,4 @@
-package com.example.musicplayer.features
+package com.example.musicplayer.features.features
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
