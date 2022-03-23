@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingComponent;
 import androidx.databinding.ViewDataBinding;
 import com.example.musicplayer.databinding.FragmentMusicListBindingImpl;
 import com.example.musicplayer.databinding.FragmentPlayedMusicBindingImpl;
+import com.example.musicplayer.databinding.ItemMusicListBindingImpl;
 import java.lang.IllegalArgumentException;
 import java.lang.Integer;
 import java.lang.Object;
@@ -23,11 +24,14 @@ public class DataBinderMapperImpl extends DataBinderMapper {
 
   private static final int LAYOUT_FRAGMENTPLAYEDMUSIC = 2;
 
-  private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(2);
+  private static final int LAYOUT_ITEMMUSICLIST = 3;
+
+  private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(3);
 
   static {
     INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.fragment_music_list, LAYOUT_FRAGMENTMUSICLIST);
     INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.fragment_played_music, LAYOUT_FRAGMENTPLAYEDMUSIC);
+    INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.item_music_list, LAYOUT_ITEMMUSICLIST);
   }
 
   @Override
@@ -50,6 +54,12 @@ public class DataBinderMapperImpl extends DataBinderMapper {
             return new FragmentPlayedMusicBindingImpl(component, view);
           }
           throw new IllegalArgumentException("The tag for fragment_played_music is invalid. Received: " + tag);
+        }
+        case  LAYOUT_ITEMMUSICLIST: {
+          if ("layout/item_music_list_0".equals(tag)) {
+            return new ItemMusicListBindingImpl(component, view);
+          }
+          throw new IllegalArgumentException("The tag for item_music_list is invalid. Received: " + tag);
         }
       }
     }
@@ -104,11 +114,12 @@ public class DataBinderMapperImpl extends DataBinderMapper {
   }
 
   private static class InnerLayoutIdLookup {
-    static final HashMap<String, Integer> sKeys = new HashMap<String, Integer>(2);
+    static final HashMap<String, Integer> sKeys = new HashMap<String, Integer>(3);
 
     static {
       sKeys.put("layout/fragment_music_list_0", com.example.musicplayer.R.layout.fragment_music_list);
       sKeys.put("layout/fragment_played_music_0", com.example.musicplayer.R.layout.fragment_played_music);
+      sKeys.put("layout/item_music_list_0", com.example.musicplayer.R.layout.item_music_list);
     }
   }
 }
