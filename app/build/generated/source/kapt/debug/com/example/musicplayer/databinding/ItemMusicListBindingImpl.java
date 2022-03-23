@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 @SuppressWarnings("unchecked")
-public class FragmentPlayedMusicBindingImpl extends FragmentPlayedMusicBinding  {
+public class ItemMusicListBindingImpl extends ItemMusicListBinding  {
 
     @Nullable
     private static final androidx.databinding.ViewDataBinding.IncludedLayouts sIncludes;
@@ -14,32 +14,28 @@ public class FragmentPlayedMusicBindingImpl extends FragmentPlayedMusicBinding  
     static {
         sIncludes = null;
         sViewsWithIds = new android.util.SparseIntArray();
-        sViewsWithIds.put(R.id.imageView2, 1);
-        sViewsWithIds.put(R.id.shapeableImageView2, 2);
-        sViewsWithIds.put(R.id.seekBar, 3);
-        sViewsWithIds.put(R.id.shapeableImageView3, 4);
-        sViewsWithIds.put(R.id.shapeableImageView4, 5);
+        sViewsWithIds.put(R.id.shapeableImageView, 1);
+        sViewsWithIds.put(R.id.songName, 2);
+        sViewsWithIds.put(R.id.Artist, 3);
     }
     // views
     @NonNull
-    private final androidx.constraintlayout.widget.ConstraintLayout mboundView0;
+    private final androidx.cardview.widget.CardView mboundView0;
     // variables
     // values
     // listeners
     // Inverse Binding Event Handlers
 
-    public FragmentPlayedMusicBindingImpl(@Nullable androidx.databinding.DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 6, sIncludes, sViewsWithIds));
+    public ItemMusicListBindingImpl(@Nullable androidx.databinding.DataBindingComponent bindingComponent, @NonNull View root) {
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
-    private FragmentPlayedMusicBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
+    private ItemMusicListBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0
-            , (android.widget.ImageView) bindings[1]
-            , (android.widget.SeekBar) bindings[3]
-            , (com.google.android.material.imageview.ShapeableImageView) bindings[2]
-            , (com.google.android.material.imageview.ShapeableImageView) bindings[4]
-            , (com.google.android.material.imageview.ShapeableImageView) bindings[5]
+            , (android.widget.TextView) bindings[3]
+            , (com.google.android.material.imageview.ShapeableImageView) bindings[1]
+            , (android.widget.TextView) bindings[2]
             );
-        this.mboundView0 = (androidx.constraintlayout.widget.ConstraintLayout) bindings[0];
+        this.mboundView0 = (androidx.cardview.widget.CardView) bindings[0];
         this.mboundView0.setTag(null);
         setRootTag(root);
         // listeners

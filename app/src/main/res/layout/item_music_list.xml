@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:cardBackgroundColor="@color/musicsitemColor"
+        android:layout_margin="@dimen/mMargin"
+        app:cardCornerRadius="20dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/shapeableImageView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginVertical="@dimen/mMargin"
+                android:layout_marginStart="@dimen/lMargin"
+                tools:src="@drawable/ic_launcher_background"
+                app:shapeAppearanceOverlay="@style/RoundImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/songName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/songNameColor"
+                android:layout_marginStart="@dimen/lMargin"
+                android:textSize="@dimen/xxlTextSize"
+                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+                app:layout_constraintTop_toTopOf="@+id/shapeableImageView"
+                tools:text="Song Name" />
+
+            <TextView
+                android:id="@+id/Artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/artistColor"
+                android:textSize="@dimen/xxlTextSize"
+                android:layout_marginStart="@dimen/lMargin"
+                app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView"
+                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+                tools:text="Artist" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
