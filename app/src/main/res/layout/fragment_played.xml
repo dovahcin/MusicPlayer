@@ -6,12 +6,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.features.PlayedMusic.PlayedMusicFragment">
+        tools:context=".features.features.PlayedMusic.PlayedFragment">
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/iconShare"
+            android:layout_width="@dimen/player_icon_width"
+            android:layout_height="@dimen/player_icon_height"
             android:layout_margin="@dimen/xlMargin"
             android:clickable="true"
             android:contentDescription="@string/desc"
@@ -23,21 +23,23 @@
             tools:ignore="UnusedAttribute" />
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/iconFavorite"
+            android:layout_width="@dimen/player_icon_width"
+            android:layout_height="@dimen/player_icon_height"
             android:layout_margin="@dimen/xlMargin"
             android:clickable="true"
             android:contentDescription="@string/desc"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_favorite_border_24"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toStartOf="@+id/iconShare"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="UnusedAttribute" />
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/iconBack"
+            android:layout_width="@dimen/player_icon_width"
+            android:layout_height="@dimen/player_icon_height"
             android:layout_margin="@dimen/xlMargin"
             android:clickable="true"
             android:contentDescription="@string/desc"
@@ -49,9 +51,9 @@
             tools:ignore="UnusedAttribute" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeableImageView2"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:id="@+id/imageArtist"
+            android:layout_width="@dimen/player_artist_width"
+            android:layout_height="@dimen/player_artist_height"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +67,8 @@
         <SeekBar
             android:id="@+id/seekBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/match_constraint"
+            android:layout_height="@dimen/player_seekbar_height"
             android:layout_marginHorizontal="@dimen/xlMargin"
             android:layout_marginTop="@dimen/xxxxlmargin"
             android:max="300"
@@ -74,12 +76,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shapeableImageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/imageArtist" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeableImageView3"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:id="@+id/buttonPlay"
+            android:layout_width="@dimen/player_playbtn_width"
+            android:layout_height="@dimen/player_playbtn_height"
             android:layout_marginTop="@dimen/xxxlmargin"
             android:clickable="true"
             android:focusable="true"
@@ -93,24 +95,25 @@
             tools:ignore="UnusedAttribute" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeableImageView4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/buttonForward"
+            android:layout_width="@dimen/player_navigator_width"
+            android:layout_height="@dimen/player_navigator_height"
             android:layout_marginStart="@dimen/xlMargin"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_baseline_skip_next_24"
-            app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView3"
-            app:layout_constraintStart_toEndOf="@+id/shapeableImageView3"
-            app:layout_constraintTop_toTopOf="@+id/shapeableImageView3"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
+            app:layout_constraintStart_toEndOf="@+id/buttonPlay"
+            app:layout_constraintTop_toTopOf="@+id/buttonPlay"
             app:shapeAppearanceOverlay="@style/RoundImage"
             tools:ignore="UnusedAttribute" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/buttonBackWard"
+            android:layout_width="@dimen/player_navigator_width"
+            android:layout_height="@dimen/player_navigator_height"
             android:layout_marginEnd="@dimen/xlMargin"
             android:clickable="true"
             android:focusable="true"
@@ -118,9 +121,9 @@
             android:rotation="180"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_baseline_skip_next_24"
-            app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView3"
-            app:layout_constraintEnd_toStartOf="@+id/shapeableImageView3"
-            app:layout_constraintTop_toTopOf="@+id/shapeableImageView3"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonPlay"
+            app:layout_constraintEnd_toStartOf="@+id/buttonPlay"
+            app:layout_constraintTop_toTopOf="@+id/buttonPlay"
             app:shapeAppearanceOverlay="@style/RoundImage"
             tools:ignore="UnusedAttribute" />
 

@@ -6,8 +6,8 @@ import android.view.View;
 import androidx.databinding.DataBinderMapper;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.ViewDataBinding;
-import com.example.musicplayer.databinding.FragmentMusicListBindingImpl;
-import com.example.musicplayer.databinding.FragmentPlayedMusicBindingImpl;
+import com.example.musicplayer.databinding.FragmentPlayListBindingImpl;
+import com.example.musicplayer.databinding.FragmentPlayedBindingImpl;
 import com.example.musicplayer.databinding.ItemMusicListBindingImpl;
 import java.lang.IllegalArgumentException;
 import java.lang.Integer;
@@ -20,17 +20,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataBinderMapperImpl extends DataBinderMapper {
-  private static final int LAYOUT_FRAGMENTMUSICLIST = 1;
+  private static final int LAYOUT_FRAGMENTPLAYLIST = 1;
 
-  private static final int LAYOUT_FRAGMENTPLAYEDMUSIC = 2;
+  private static final int LAYOUT_FRAGMENTPLAYED = 2;
 
   private static final int LAYOUT_ITEMMUSICLIST = 3;
 
   private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(3);
 
   static {
-    INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.fragment_music_list, LAYOUT_FRAGMENTMUSICLIST);
-    INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.fragment_played_music, LAYOUT_FRAGMENTPLAYEDMUSIC);
+    INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.fragment_play_list, LAYOUT_FRAGMENTPLAYLIST);
+    INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.fragment_played, LAYOUT_FRAGMENTPLAYED);
     INTERNAL_LAYOUT_ID_LOOKUP.put(com.example.musicplayer.R.layout.item_music_list, LAYOUT_ITEMMUSICLIST);
   }
 
@@ -43,17 +43,17 @@ public class DataBinderMapperImpl extends DataBinderMapper {
         throw new RuntimeException("view must have a tag");
       }
       switch(localizedLayoutId) {
-        case  LAYOUT_FRAGMENTMUSICLIST: {
-          if ("layout/fragment_music_list_0".equals(tag)) {
-            return new FragmentMusicListBindingImpl(component, view);
+        case  LAYOUT_FRAGMENTPLAYLIST: {
+          if ("layout/fragment_play_list_0".equals(tag)) {
+            return new FragmentPlayListBindingImpl(component, view);
           }
-          throw new IllegalArgumentException("The tag for fragment_music_list is invalid. Received: " + tag);
+          throw new IllegalArgumentException("The tag for fragment_play_list is invalid. Received: " + tag);
         }
-        case  LAYOUT_FRAGMENTPLAYEDMUSIC: {
-          if ("layout/fragment_played_music_0".equals(tag)) {
-            return new FragmentPlayedMusicBindingImpl(component, view);
+        case  LAYOUT_FRAGMENTPLAYED: {
+          if ("layout/fragment_played_0".equals(tag)) {
+            return new FragmentPlayedBindingImpl(component, view);
           }
-          throw new IllegalArgumentException("The tag for fragment_played_music is invalid. Received: " + tag);
+          throw new IllegalArgumentException("The tag for fragment_played is invalid. Received: " + tag);
         }
         case  LAYOUT_ITEMMUSICLIST: {
           if ("layout/item_music_list_0".equals(tag)) {
@@ -117,8 +117,8 @@ public class DataBinderMapperImpl extends DataBinderMapper {
     static final HashMap<String, Integer> sKeys = new HashMap<String, Integer>(3);
 
     static {
-      sKeys.put("layout/fragment_music_list_0", com.example.musicplayer.R.layout.fragment_music_list);
-      sKeys.put("layout/fragment_played_music_0", com.example.musicplayer.R.layout.fragment_played_music);
+      sKeys.put("layout/fragment_play_list_0", com.example.musicplayer.R.layout.fragment_play_list);
+      sKeys.put("layout/fragment_played_0", com.example.musicplayer.R.layout.fragment_played);
       sKeys.put("layout/item_music_list_0", com.example.musicplayer.R.layout.item_music_list);
     }
   }

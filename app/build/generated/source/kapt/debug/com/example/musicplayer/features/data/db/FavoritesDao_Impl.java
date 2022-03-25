@@ -37,7 +37,7 @@ public final class FavoritesDao_Impl implements FavoritesDao {
     this.__insertionAdapterOfFavorite = new EntityInsertionAdapter<Favorite>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `favorites_table` (`songName`,`artistName`) VALUES (?,?)";
+        return "INSERT OR REPLACE INTO `favorites` (`songName`,`artistName`) VALUES (?,?)";
       }
 
       @Override
@@ -57,7 +57,7 @@ public final class FavoritesDao_Impl implements FavoritesDao {
     this.__preparedStmtOfDeleteFavoriteSong = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
-        final String _query = "DELETE FROM favorites_table WHERE songName = ?";
+        final String _query = "DELETE FROM favorites WHERE songName = ?";
         return _query;
       }
     };
@@ -109,7 +109,7 @@ public final class FavoritesDao_Impl implements FavoritesDao {
 
   @Override
   public Object getAllFavorites(final Continuation<? super List<Favorite>> continuation) {
-    final String _sql = "SELECT * FROM favorites_table ORDER BY songName ASC";
+    final String _sql = "SELECT * FROM favorites ORDER BY songName ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
     return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<Favorite>>() {
