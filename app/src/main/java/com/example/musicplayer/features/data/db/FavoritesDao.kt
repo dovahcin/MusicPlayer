@@ -12,10 +12,10 @@ interface FavoritesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addToFavorites(favorite: Favorite)
 
-    @Query("SELECT * FROM favorites_table ORDER BY songName ASC")
+    @Query("SELECT * FROM favorites ORDER BY songName ASC")
     suspend fun getAllFavorites(): MutableList<Favorite>
 
-    @Query("DELETE FROM favorites_table WHERE songName = :songName")
+    @Query("DELETE FROM favorites WHERE songName = :songName")
     suspend fun deleteFavoriteSong(songName: String)
 
 }

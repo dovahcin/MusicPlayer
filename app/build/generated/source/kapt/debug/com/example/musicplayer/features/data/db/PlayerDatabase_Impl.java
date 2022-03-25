@@ -37,14 +37,14 @@ public final class PlayerDatabase_Impl extends PlayerDatabase {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `favorites_table` (`songName` TEXT NOT NULL, `artistName` TEXT NOT NULL, PRIMARY KEY(`songName`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `favorites` (`songName` TEXT NOT NULL, `artistName` TEXT NOT NULL, PRIMARY KEY(`songName`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7afb2a36e3c74fdb17577fd2be2b5df')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0607518a40fffd0b2c9a7621d33bca48')");
       }
 
       @Override
       public void dropAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("DROP TABLE IF EXISTS `favorites_table`");
+        _db.execSQL("DROP TABLE IF EXISTS `favorites`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
             mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -83,21 +83,21 @@ public final class PlayerDatabase_Impl extends PlayerDatabase {
 
       @Override
       protected RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
-        final HashMap<String, TableInfo.Column> _columnsFavoritesTable = new HashMap<String, TableInfo.Column>(2);
-        _columnsFavoritesTable.put("songName", new TableInfo.Column("songName", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsFavoritesTable.put("artistName", new TableInfo.Column("artistName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        final HashSet<TableInfo.ForeignKey> _foreignKeysFavoritesTable = new HashSet<TableInfo.ForeignKey>(0);
-        final HashSet<TableInfo.Index> _indicesFavoritesTable = new HashSet<TableInfo.Index>(0);
-        final TableInfo _infoFavoritesTable = new TableInfo("favorites_table", _columnsFavoritesTable, _foreignKeysFavoritesTable, _indicesFavoritesTable);
-        final TableInfo _existingFavoritesTable = TableInfo.read(_db, "favorites_table");
-        if (! _infoFavoritesTable.equals(_existingFavoritesTable)) {
-          return new RoomOpenHelper.ValidationResult(false, "favorites_table(com.example.musicplayer.features.domain.Favorite).\n"
-                  + " Expected:\n" + _infoFavoritesTable + "\n"
-                  + " Found:\n" + _existingFavoritesTable);
+        final HashMap<String, TableInfo.Column> _columnsFavorites = new HashMap<String, TableInfo.Column>(2);
+        _columnsFavorites.put("songName", new TableInfo.Column("songName", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFavorites.put("artistName", new TableInfo.Column("artistName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysFavorites = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesFavorites = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoFavorites = new TableInfo("favorites", _columnsFavorites, _foreignKeysFavorites, _indicesFavorites);
+        final TableInfo _existingFavorites = TableInfo.read(_db, "favorites");
+        if (! _infoFavorites.equals(_existingFavorites)) {
+          return new RoomOpenHelper.ValidationResult(false, "favorites(com.example.musicplayer.features.domain.Favorite).\n"
+                  + " Expected:\n" + _infoFavorites + "\n"
+                  + " Found:\n" + _existingFavorites);
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "a7afb2a36e3c74fdb17577fd2be2b5df", "ba3034c8d9d7067e072f1dd6d435f7ec");
+    }, "0607518a40fffd0b2c9a7621d33bca48", "f4c1dbb087af4e32799bf3c8096231f0");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -110,7 +110,7 @@ public final class PlayerDatabase_Impl extends PlayerDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "favorites_table");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "favorites");
   }
 
   @Override
@@ -119,7 +119,7 @@ public final class PlayerDatabase_Impl extends PlayerDatabase {
     final SupportSQLiteDatabase _db = super.getOpenHelper().getWritableDatabase();
     try {
       super.beginTransaction();
-      _db.execSQL("DELETE FROM `favorites_table`");
+      _db.execSQL("DELETE FROM `favorites`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();

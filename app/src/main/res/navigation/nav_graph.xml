@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/musicListFragment"
-        android:name="com.example.musicplayer.features.features.MusicsList.MusicListFragment"
+        android:name="com.example.musicplayer.features.features.playlist.PlayListFragment"
         android:label="fragment_music_list"
-        tools:layout="@layout/fragment_music_list" />
+        tools:layout="@layout/fragment_play_list" />
     <fragment
         android:id="@+id/playedMusicFragment"
-        android:name="com.example.musicplayer.features.features.PlayedMusic.PlayedMusicFragment"
+        android:name="com.example.musicplayer.features.features.PlayedMusic.PlayedFragment"
         android:label="fragment_played_music"
-        tools:layout="@layout/fragment_played_music" />
+        tools:layout="@layout/fragment_played" />
 </navigation>
