@@ -14,9 +14,7 @@ public class ItemMusicListBindingImpl extends ItemMusicListBinding  {
     static {
         sIncludes = null;
         sViewsWithIds = new android.util.SparseIntArray();
-        sViewsWithIds.put(R.id.shapeableImageView, 1);
-        sViewsWithIds.put(R.id.songName, 2);
-        sViewsWithIds.put(R.id.Artist, 3);
+        sViewsWithIds.put(R.id.shapeableImageView, 3);
     }
     // views
     @NonNull
@@ -31,12 +29,14 @@ public class ItemMusicListBindingImpl extends ItemMusicListBinding  {
     }
     private ItemMusicListBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0
-            , (android.widget.TextView) bindings[3]
-            , (com.google.android.material.imageview.ShapeableImageView) bindings[1]
             , (android.widget.TextView) bindings[2]
+            , (com.google.android.material.imageview.ShapeableImageView) bindings[3]
+            , (android.widget.TextView) bindings[1]
             );
+        this.Artist.setTag(null);
         this.mboundView0 = (androidx.cardview.widget.CardView) bindings[0];
         this.mboundView0.setTag(null);
+        this.songName.setTag(null);
         setRootTag(root);
         // listeners
         invalidateAll();
@@ -45,7 +45,7 @@ public class ItemMusicListBindingImpl extends ItemMusicListBinding  {
     @Override
     public void invalidateAll() {
         synchronized(this) {
-                mDirtyFlags = 0x1L;
+                mDirtyFlags = 0x2L;
         }
         requestRebind();
     }
@@ -63,7 +63,22 @@ public class ItemMusicListBindingImpl extends ItemMusicListBinding  {
     @Override
     public boolean setVariable(int variableId, @Nullable Object variable)  {
         boolean variableSet = true;
+        if (BR.music == variableId) {
+            setMusic((com.example.musicplayer.features.domain.Music) variable);
+        }
+        else {
+            variableSet = false;
+        }
             return variableSet;
+    }
+
+    public void setMusic(@Nullable com.example.musicplayer.features.domain.Music Music) {
+        this.mMusic = Music;
+        synchronized(this) {
+            mDirtyFlags |= 0x1L;
+        }
+        notifyPropertyChanged(BR.music);
+        super.requestRebind();
     }
 
     @Override
@@ -80,14 +95,36 @@ public class ItemMusicListBindingImpl extends ItemMusicListBinding  {
             dirtyFlags = mDirtyFlags;
             mDirtyFlags = 0;
         }
+        java.lang.String musicArtist = null;
+        java.lang.String musicSongName = null;
+        com.example.musicplayer.features.domain.Music music = mMusic;
+
+        if ((dirtyFlags & 0x3L) != 0) {
+
+
+
+                if (music != null) {
+                    // read music.artist
+                    musicArtist = music.getArtist();
+                    // read music.songName
+                    musicSongName = music.getSongName();
+                }
+        }
         // batch finished
+        if ((dirtyFlags & 0x3L) != 0) {
+            // api target 1
+
+            androidx.databinding.adapters.TextViewBindingAdapter.setText(this.Artist, musicArtist);
+            androidx.databinding.adapters.TextViewBindingAdapter.setText(this.songName, musicSongName);
+        }
     }
     // Listener Stub Implementations
     // callback impls
     // dirty flag
     private  long mDirtyFlags = 0xffffffffffffffffL;
     /* flag mapping
-        flag 0 (0x1L): null
+        flag 0 (0x1L): music
+        flag 1 (0x2L): null
     flag mapping end*/
     //end
 }

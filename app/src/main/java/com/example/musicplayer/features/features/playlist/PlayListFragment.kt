@@ -6,16 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.musicplayer.R
 import com.example.musicplayer.databinding.FragmentPlayListBinding
+import com.example.musicplayer.features.domain.Music
+import com.example.musicplayer.features.features.playlist.adapter.PlayListAdapter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListFragment : Fragment() {
     private var _binding: FragmentPlayListBinding? = null
     private val binding get() = _binding!!
+
+    private val playListAdapter = PlayListAdapter()
 
     private val playListViewModel: PlayListViewModel by viewModel()
 
@@ -27,11 +33,13 @@ class PlayListFragment : Fragment() {
 
         playListViewModel.fetchListForView(requireContext())
 
+        binding.recyclerView.adapter = playListAdapter
+
         lifecycleScope.launch {
             playListViewModel.uiState.collect { uiState ->
                 when(uiState) {
-                    is PlayListUiState.Success -> showMusics()
-                    is PlayListUiState.Failure -> showError()
+                    is PlayListUiState.Success -> showMusics(uiState.musics)
+                    is PlayListUiState.Failure -> showError(uiState.exception)
                 }
                 showLoadingView(uiState is PlayListUiState.Loading)
             }
@@ -40,13 +48,16 @@ class PlayListFragment : Fragment() {
         return binding.root
     }
 
-    private fun showMusics() {
+    private fun showMusics(musics: MutableList<Music>) {
+        playListAdapter.update(musics)
     }
 
-    private fun showLoadingView(b: Boolean) {
+    private fun showLoadingView(isLoading: Boolean) {
+        binding.progressbar.isVisible = isLoading
     }
 
-    private fun showError() {
+    private fun showError(exception: Throwable) {
+        Toast.makeText(requireContext(), "${exception.localizedMessage}!!", Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroy() {

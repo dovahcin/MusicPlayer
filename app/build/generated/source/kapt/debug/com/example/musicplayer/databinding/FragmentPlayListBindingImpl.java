@@ -13,7 +13,9 @@ public class FragmentPlayListBindingImpl extends FragmentPlayListBinding  {
     private static final android.util.SparseIntArray sViewsWithIds;
     static {
         sIncludes = null;
-        sViewsWithIds = null;
+        sViewsWithIds = new android.util.SparseIntArray();
+        sViewsWithIds.put(R.id.recyclerView, 1);
+        sViewsWithIds.put(R.id.progressbar, 2);
     }
     // views
     @NonNull
@@ -24,10 +26,12 @@ public class FragmentPlayListBindingImpl extends FragmentPlayListBinding  {
     // Inverse Binding Event Handlers
 
     public FragmentPlayListBindingImpl(@Nullable androidx.databinding.DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 1, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
     private FragmentPlayListBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0
+            , (android.widget.ProgressBar) bindings[2]
+            , (androidx.recyclerview.widget.RecyclerView) bindings[1]
             );
         this.mboundView0 = (android.widget.FrameLayout) bindings[0];
         this.mboundView0.setTag(null);
