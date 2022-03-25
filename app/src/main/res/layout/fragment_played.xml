@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.features.PlayedMusic.PlayedFragment">
+        tools:context=".features.features.playedmusic.PlayedFragment">
 
         <ImageView
             android:id="@+id/iconShare"
