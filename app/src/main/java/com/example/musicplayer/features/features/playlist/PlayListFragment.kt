@@ -37,7 +37,7 @@ class PlayListFragment : Fragment() {
 
         lifecycleScope.launch {
             playListViewModel.uiState.collect { uiState ->
-                when(uiState) {
+                when (uiState) {
                     is PlayListUiState.Success -> showMusics(uiState.musics)
                     is PlayListUiState.Failure -> showError(uiState.exception)
                 }
@@ -49,7 +49,12 @@ class PlayListFragment : Fragment() {
     }
 
     private fun showMusics(musics: MutableList<Music>) {
-        playListAdapter.update(musics)
+        if (musics.isNullOrEmpty()) {
+            binding.textView.isVisible = true
+            binding.recyclerView.isVisible = false
+        } else {
+            playListAdapter.update(musics)
+        }
     }
 
     private fun showLoadingView(isLoading: Boolean) {
@@ -57,7 +62,8 @@ class PlayListFragment : Fragment() {
     }
 
     private fun showError(exception: Throwable) {
-        Toast.makeText(requireContext(), "${exception.localizedMessage}!!", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "${exception.localizedMessage}!!", Toast.LENGTH_LONG)
+            .show()
     }
 
     override fun onDestroy() {

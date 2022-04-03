@@ -13,6 +13,16 @@
            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
            tools:listitem="@layout/item_music_list"/>
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/xxlTextSize"
+            android:visibility="invisible"
+            android:textColor="@color/white"
+            android:text="@string/no_musics_in_this_device"/>
+
         <ProgressBar
             android:id="@+id/progressbar"
             android:layout_width="wrap_content"

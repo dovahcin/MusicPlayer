@@ -24,20 +24,24 @@ class PlayListRepository {
                 val artistColumn =
                     cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST)
                 val idColumn = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID)
-                while (cursor.moveToNext()) {
-                    val id = cursor.getLong(idColumn)
-                    val title = cursor.getString(nameColumn)
-                    val artist = cursor.getString(artistColumn)
-                    emit(
-                        mutableListOf(
-                            Music(
-                                id,
-                                title,
-                                artist
+                if (cursor.moveToNext() || cursor.columnCount == 1)
+                    do {
+                        val id = cursor.getLong(idColumn)
+                        val title = cursor.getString(nameColumn)
+                        val artist = cursor.getString(artistColumn)
+                        emit(
+                            mutableListOf(
+                                Music(
+                                    id,
+                                    title,
+                                    artist
+                                )
                             )
                         )
-                    )
-                }
+                    }
+                while (cursor.moveToNext())
+                else
+                    emit(mutableListOf())
                 cursor.close()
             }
         }
