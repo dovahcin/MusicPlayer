@@ -20,5 +20,5 @@ val databaseModule = module {
 }
 val mainModule = module {
     viewModel { PlayListViewModel(get()) }
-    single { PlayListRepository() }
+    single { PlayListRepository(get()) }
 }
