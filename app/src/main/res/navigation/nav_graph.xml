@@ -9,10 +9,24 @@
         android:id="@+id/musicListFragment"
         android:name="com.example.musicplayer.features.features.playlist.PlayListFragment"
         android:label="fragment_music_list"
-        tools:layout="@layout/fragment_play_list" />
+        tools:layout="@layout/fragment_play_list" >
+        <action
+            android:id="@+id/action_musicListFragment_to_playedMusicFragment"
+            app:destination="@id/playedMusicFragment" >
+            <argument
+                android:name="appendedId"
+                app:argType="long"
+                app:nullable="false" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/playedMusicFragment"
-        android:name="com.example.musicplayer.features.features.PlayedMusic.PlayedFragment"
+        android:name="com.example.musicplayer.features.features.playedmusic.PlayedFragment"
         android:label="fragment_played_music"
-        tools:layout="@layout/fragment_played" />
+        tools:layout="@layout/fragment_played" >
+        <argument
+            android:name="appendedId"
+            app:argType="long"
+            app:nullable="false"/>
+    </fragment>
 </navigation>
