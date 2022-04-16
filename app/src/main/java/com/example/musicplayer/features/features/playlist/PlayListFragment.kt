@@ -1,7 +1,6 @@
 package com.example.musicplayer.features.features.playlist
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.musicplayer.R
 import com.example.musicplayer.databinding.FragmentPlayListBinding
 import com.example.musicplayer.features.domain.Music
 import com.example.musicplayer.features.features.playlist.adapter.PlayListAdapter
+import com.example.musicplayer.features.util.PlayListUiState
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,7 +32,7 @@ class PlayListFragment : Fragment() {
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_play_list, container, false)
 
-        playListViewModel.fetchListForView(requireContext())
+        playListViewModel.fetchListForView()
 
         binding.recyclerView.adapter = playListAdapter
 
@@ -48,7 +49,7 @@ class PlayListFragment : Fragment() {
         return binding.root
     }
 
-    private fun showMusics(musics: MutableList<Music>) {
+    private fun showMusics(musics: List<Music>) {
         if (musics.isNullOrEmpty()) {
             binding.textView.isVisible = true
             binding.recyclerView.isVisible = false

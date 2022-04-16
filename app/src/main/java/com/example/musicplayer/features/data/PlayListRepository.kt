@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.lang.IllegalArgumentException
 
-class PlayListRepository {
+class PlayListRepository(private val context: Context) {
 
-    suspend fun fetchMusics(context: Context) = flow {
+    suspend fun fetchMusics() = flow {
         val resolver = context.contentResolver
         val uri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val cursor = resolver.query(
