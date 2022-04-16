@@ -22,7 +22,13 @@ class PlayListFragment : Fragment() {
     private var _binding: FragmentPlayListBinding? = null
     private val binding get() = _binding!!
 
-    private val playListAdapter = PlayListAdapter()
+    private val musicClick: (Long) -> Unit = {
+        findNavController().navigate(
+            PlayListFragmentDirections.actionMusicListFragmentToPlayedMusicFragment(it)
+        )
+    }
+
+    private val playListAdapter = PlayListAdapter(musicClick)
 
     private val playListViewModel: PlayListViewModel by viewModel()
 
