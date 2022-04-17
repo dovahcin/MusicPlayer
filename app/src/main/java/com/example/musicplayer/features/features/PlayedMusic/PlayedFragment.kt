@@ -1,5 +1,7 @@
 package com.example.musicplayer.features.features.playedmusic
 
+import android.content.Context
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -14,6 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.musicplayer.R
 import com.example.musicplayer.databinding.FragmentPlayedBinding
+import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
+import com.example.musicplayer.features.features.playedmusic.service.PlayService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,7 +30,6 @@ class PlayedFragment : Fragment() {
     private lateinit var runnable: Runnable
     private var handler = Handler()
 
-    var mediaPlayer: MediaPlayer? = MediaPlayer()
 
     private val playedViewModel: PlayedViewModel by viewModel()
 
@@ -42,19 +45,18 @@ class PlayedFragment : Fragment() {
 
 
         binding.buttonPlay.setOnClickListener {
-            if (!mediaPlayer!!.isPlaying) {
-                mediaPlayer?.start()
-                it.setBackgroundResource(R.drawable.ic_baseline_pause_24)
-            } else {
-                mediaPlayer?.pause()
-                it.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24)
+            Intent(context, PlayService::class.java).let { intent ->
+                intent.putExtra(PLAY_EXTRA, contentUri)
+                context?.startService(intent)
             }
+            playedViewModel.initializeWatcher()
         }
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekbar: SeekBar?, currentPosition: Int, isChanged: Boolean) {
-                if (isChanged)
-                    mediaPlayer?.seekTo(currentPosition)
+                if (isChanged) {
+
+                }
             }
 
             override fun onStartTrackingTouch(seekbar: SeekBar?) {
@@ -63,34 +65,30 @@ class PlayedFragment : Fragment() {
             override fun onStopTrackingTouch(seekbar: SeekBar?) {
             }
         })
-
-        lifecycleScope.launch(Dispatchers.Default) {
-            mediaPlayer?.setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-
-            mediaPlayer?.setDataSource(requireContext(), contentUri)
-            mediaPlayer?.prepareAsync()
-
             runnable = Runnable {
-                binding.seekBar.max = mediaPlayer!!.duration
-                binding.seekBar.progress = mediaPlayer!!.currentPosition
                 handler.postDelayed(runnable, 100)
             }
             handler.postDelayed(runnable, 100)
 
-        }
+
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(context, PlayService::class.java).also { intent ->
+            context?.bindService(intent, playedViewModel.getConnection(), Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.unbindService(playedViewModel.getConnection())
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        mediaPlayer?.release()
-        mediaPlayer = null
     }
 }

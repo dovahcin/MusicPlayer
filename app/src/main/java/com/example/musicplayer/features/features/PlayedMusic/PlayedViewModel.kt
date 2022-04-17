@@ -12,4 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewModel() {
     fun getMusic(appendedId: Long): Uri =
     playedRepository.getMusicById(appendedId)
+
+    fun initializeWatcher() {
+        playedRepository.initWatcher()
+    }
+
+    fun getConnection() = playedRepository.connection
 }
