@@ -4,8 +4,8 @@ import android.app.Service
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
 
 class PlayService : Service(), MediaPlayer.OnPreparedListener {
@@ -19,18 +19,19 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
         super.onCreate()
         mediaPlayer = MediaPlayer()
         mediaPlayer?.setOnPreparedListener(this)
-        Log.d(TAG, "onCreate : ${mediaPlayer?.duration}")
+    }
+
+    inner class PlayBinder : Binder() {
+        fun getService(): PlayService = this@PlayService
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG,"onStartCommand : ")
         mediaPlayer?.setAudioAttributes(
             AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .build()
         )
-
         mediaPlayer?.setDataSource(this, intent?.getParcelableExtra(PLAY_EXTRA)!!)
         mediaPlayer?.prepareAsync()
 
@@ -38,12 +39,10 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     fun getPlayer(): MediaPlayer {
-        Log.d(TAG, "getPlayer : ${mediaPlayer?.duration}")
         return mediaPlayer!!
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
         mediaPlayer?.start()
-        Log.d(TAG, "onPrepared : ${mediaPlayer?.duration}")
     }
 }
