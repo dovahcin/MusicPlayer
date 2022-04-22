@@ -43,10 +43,6 @@ class PlayedFragment : Fragment() {
             playedViewModel.initializeWatcher()
         }
 
-        binding.buttonForward.setOnClickListener {
-            playedViewModel.initializeWatcher()
-        }
-
         lifecycleScope.launch {
             playedViewModel.time.collect { time ->
                 binding.seekBar.max = time.duration!!
@@ -57,7 +53,7 @@ class PlayedFragment : Fragment() {
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekbar: SeekBar?, currentPosition: Int, isChanged: Boolean) {
                 if (isChanged) {
-
+                    playedViewModel.seekToChangedInterval(currentPosition)
                 }
             }
 

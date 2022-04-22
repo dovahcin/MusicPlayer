@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
 
 class PlayService : Service(), MediaPlayer.OnPreparedListener {
@@ -36,6 +37,11 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
         mediaPlayer?.prepareAsync()
 
         return START_STICKY
+    }
+
+    fun seekTo(interval: Int) {
+        mediaPlayer?.seekTo(interval)
+        Log.d(TAG, "seekTo : $interval")
     }
 
     fun getPlayer(): MediaPlayer {
