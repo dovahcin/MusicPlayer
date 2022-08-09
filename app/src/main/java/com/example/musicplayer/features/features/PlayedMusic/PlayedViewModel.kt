@@ -39,6 +39,16 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
         Log.d(TAG, "$interval")
     }
 
+    fun isPlayerPaused() = playedRepository.playService?.isPaused()
+
+    fun pauseThePlayer() {
+        playedRepository.playService?.pausePlayer()
+    }
+
+    fun playTheMusic() {
+        playedRepository.playService?.playSong()
+    }
+
     fun getMusicCurrentPosition() {
         viewModelScope.launch {
             playedRepository.getPlayer().collect {
@@ -48,4 +58,9 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
     }
 
     fun getConnection() = playedRepository.connection
+
+    override fun onCleared() {
+        super.onCleared()
+        handler.removeCallbacks(runnable)
+    }
 }

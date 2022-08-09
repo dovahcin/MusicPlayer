@@ -6,11 +6,12 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
 
 class PlayService : Service(), MediaPlayer.OnPreparedListener {
     private var mediaPlayer: MediaPlayer? = null
+
+    private var isStopped = true
 
     private val TAG = "Service"
 
@@ -41,7 +42,16 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
 
     fun seekTo(interval: Int) {
         mediaPlayer?.seekTo(interval)
-        Log.d(TAG, "seekTo : $interval")
+    }
+
+    fun isPaused() = mediaPlayer?.isPlaying == false && !isStopped
+
+    fun playSong() {
+        mediaPlayer?.start()
+    }
+
+    fun pausePlayer() {
+        mediaPlayer?.pause()
     }
 
     fun getPlayer(): MediaPlayer {
@@ -49,6 +59,7 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
-        mediaPlayer?.start()
+        playSong()
+        isStopped = false
     }
 }
