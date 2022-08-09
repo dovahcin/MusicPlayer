@@ -5,7 +5,6 @@ import android.content.ContentUris
 import android.content.ServiceConnection
 import android.net.Uri
 import android.os.IBinder
-import android.util.Log
 import com.example.musicplayer.features.domain.Time
 import com.example.musicplayer.features.features.playedmusic.service.PlayService
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +15,7 @@ import kotlinx.coroutines.flow.flowOn
 class PlayedRepository {
     private var isBounded = false
     private var _playService: PlayService? = null
-    val playService get() = _playService
+    private val playService get() = _playService
 
     companion object {
         const val PLAY_EXTRA = "Play_Extra"
@@ -27,25 +26,23 @@ class PlayedRepository {
         appendedId
     )
 
-    fun getPlayer() = flow {
+    fun getPlayBackTime() = flow {
         if (isBounded) {
             emit(
                 Time(
-                    _playService?.getPlayer()?.duration,
-                    _playService?.getPlayer()?.currentPosition,
+                    playService?.getPlayer()?.duration,
+                    playService?.getPlayer()?.currentPosition,
                 )
             )
-            Log.d("Repository", "${_playService?.getPlayer()?.currentPosition}")
         }
     }.flowOn(Dispatchers.IO)
 
-    val connection = object : ServiceConnection {
+    fun getConnection() = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
             val binder = service as PlayService.PlayBinder
             _playService = binder.getService()
             isBounded = true
         }
-
         override fun onServiceDisconnected(className: ComponentName) {
             isBounded = false
         }
