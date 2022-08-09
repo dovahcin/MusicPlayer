@@ -40,11 +40,11 @@ class PlayedFragment : Fragment() {
                 intent.putExtra(PLAY_EXTRA, contentUri)
                 context?.startService(intent)
             }
-            playedViewModel.initializeWatcher()
+            playedViewModel.watchPlayBack()
         }
 
         binding.buttonForward.setOnClickListener {
-            playedViewModel.initializeWatcher()
+            playedViewModel.watchPlayBack()
         }
 
         lifecycleScope.launch {
@@ -74,7 +74,7 @@ class PlayedFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Intent(context, PlayService::class.java).also { intent ->
-            context?.bindService(intent, playedViewModel.getConnection(), Context .BIND_AUTO_CREATE)
+            context?.bindService(intent, playedViewModel.getConnection(), Context.BIND_AUTO_CREATE)
         }
     }
 

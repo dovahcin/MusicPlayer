@@ -1,11 +1,11 @@
 package com.example.musicplayer.features.features.playedmusic
 
 import android.net.Uri
-import android.os.Handler
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.musicplayer.features.data.PlayedRepository
 import com.example.musicplayer.features.domain.Time
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,30 +14,26 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
     private var _time: MutableStateFlow<Time> = MutableStateFlow(Time())
     val time: StateFlow<Time> = _time
 
-    private val handler = Handler()
-    private lateinit var runnable: Runnable
     private val interval = 1000L
 
     fun getContentUri(appendedId: Long): Uri =
-    playedRepository.getUriId(appendedId)
+        playedRepository.getUriId(appendedId)
 
-    fun initializeWatcher() {
-        runnable = object : Runnable {
-            override fun run() {
-                getMusicCurrentPosition()
-                handler.postDelayed(this, interval)
-            }
-        }
-        handler.postDelayed(runnable, interval)
-    }
+    fun getConnection() = playedRepository.getConnection()
 
-    fun getMusicCurrentPosition() {
+    fun watchPlayBack() {
         viewModelScope.launch {
-            playedRepository.getPlayer().collect {
-                _time.value = it
+            delay(2000L)
+            playedRepository.getPlayBackTime().collect { time ->
+                while (isMusicPlaying(time)) {
+                    playedRepository.getPlayBackTime().collect {
+                        _time.value = time
+                    }
+                    delay(interval)
+                }
             }
         }
     }
 
-    fun getConnection() = playedRepository.connection
+    private fun isMusicPlaying(time: Time) = time.currentPosition!! != time.duration!!
 }
