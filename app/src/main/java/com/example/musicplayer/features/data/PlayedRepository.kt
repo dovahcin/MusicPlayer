@@ -15,7 +15,8 @@ import kotlinx.coroutines.flow.flowOn
 
 class PlayedRepository {
     private var isBounded = false
-    private var playService: PlayService? = null
+    private var _playService: PlayService? = null
+    val playService get() = _playService
 
     companion object {
         const val PLAY_EXTRA = "Play_Extra"
@@ -30,18 +31,18 @@ class PlayedRepository {
         if (isBounded) {
             emit(
                 Time(
-                    playService?.getPlayer()?.duration,
-                    playService?.getPlayer()?.currentPosition,
+                    _playService?.getPlayer()?.duration,
+                    _playService?.getPlayer()?.currentPosition,
                 )
             )
-            Log.d("Repository", "${playService?.getPlayer()?.currentPosition}")
+            Log.d("Repository", "${_playService?.getPlayer()?.currentPosition}")
         }
     }.flowOn(Dispatchers.IO)
 
     val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
             val binder = service as PlayService.PlayBinder
-            playService = binder.getService()
+            _playService = binder.getService()
             isBounded = true
         }
 
