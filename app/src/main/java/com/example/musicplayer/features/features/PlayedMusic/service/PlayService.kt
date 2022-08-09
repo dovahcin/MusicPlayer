@@ -11,8 +11,6 @@ import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXT
 class PlayService : Service(), MediaPlayer.OnPreparedListener {
     private var mediaPlayer: MediaPlayer? = null
 
-    private var isStopped = true
-
     private val TAG = "Service"
 
     override fun onBind(p0: Intent?): IBinder = PlayBinder()
@@ -40,26 +38,11 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
         return START_STICKY
     }
 
-    fun seekTo(interval: Int) {
-        mediaPlayer?.seekTo(interval)
-    }
-
-    fun isPaused() = mediaPlayer?.isPlaying == false && !isStopped
-
-    fun playSong() {
-        mediaPlayer?.start()
-    }
-
-    fun pausePlayer() {
-        mediaPlayer?.pause()
-    }
-
     fun getPlayer(): MediaPlayer {
         return mediaPlayer!!
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
-        playSong()
-        isStopped = false
+        mediaPlayer?.start()
     }
 }

@@ -2,7 +2,6 @@ package com.example.musicplayer.features.features.playedmusic
 
 import android.net.Uri
 import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.musicplayer.features.data.PlayedRepository
@@ -12,8 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewModel() {
-    private val TAG = "ViewModel"
-
     private var _time: MutableStateFlow<Time> = MutableStateFlow(Time())
     val time: StateFlow<Time> = _time
 
@@ -34,21 +31,6 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
         handler.postDelayed(runnable, interval)
     }
 
-    fun seekToChangedInterval(interval: Int) {
-        playedRepository.playService?.seekTo(interval)
-        Log.d(TAG, "$interval")
-    }
-
-    fun isPlayerPaused() = playedRepository.playService?.isPaused()
-
-    fun pauseThePlayer() {
-        playedRepository.playService?.pausePlayer()
-    }
-
-    fun playTheMusic() {
-        playedRepository.playService?.playSong()
-    }
-
     fun getMusicCurrentPosition() {
         viewModelScope.launch {
             playedRepository.getPlayer().collect {
@@ -58,9 +40,4 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
     }
 
     fun getConnection() = playedRepository.connection
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacks(runnable)
-    }
 }
