@@ -1,5 +1,6 @@
 package com.example.musicplayer.features.features.playedmusic
 
+import android.media.MediaPlayer
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,9 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
     private var _time: MutableStateFlow<Time> = MutableStateFlow(Time())
     val time: StateFlow<Time> = _time
 
+    private var _player: MutableStateFlow<MediaPlayer> = MutableStateFlow(MediaPlayer())
+    val player: StateFlow<MediaPlayer> = _player
+
     private val interval = 1000L
 
     fun getContentUri(appendedId: Long): Uri =
@@ -24,10 +28,10 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
     fun watchPlayBack() {
         viewModelScope.launch {
             delay(2000L)
-            playedRepository.getPlayBackTime().collect { time ->
-                while (isMusicPlaying(time)) {
-                    playedRepository.getPlayBackTime().collect {
-                        _time.value = time
+            playedRepository.getPlayer().collect { player ->
+                while (isMusicPlaying(player)) {
+                    playedRepository.getPlayer().collect {
+                        _time.value = Time(player.duration, player.currentPosition)
                     }
                     delay(interval)
                 }
@@ -35,5 +39,13 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
         }
     }
 
-    private fun isMusicPlaying(time: Time) = time.currentPosition!! != time.duration!!
+    fun getPlayer() {
+        viewModelScope.launch {
+            playedRepository.getPlayer().collect { player ->
+                _player.value = player
+            }
+        }
+    }
+
+    private fun isMusicPlaying(player: MediaPlayer) = player.currentPosition != player.duration
 }
