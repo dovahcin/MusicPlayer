@@ -2,6 +2,7 @@ package com.example.musicplayer.features.features.playedmusic
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,8 @@ class PlayedFragment : Fragment() {
     private var _binding: FragmentPlayedBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var mediaPlayer: MediaPlayer
+
     private val playedViewModel: PlayedViewModel by viewModel()
 
     private val navArgs: PlayedFragmentArgs by navArgs()
@@ -35,16 +38,41 @@ class PlayedFragment : Fragment() {
 
         val contentUri = playedViewModel.getContentUri(navArgs.appendedId)
 
-        binding.buttonPlay.setOnClickListener {
-            Intent(context, PlayService::class.java).also { intent ->
-                intent.putExtra(PLAY_EXTRA, contentUri)
-                context?.startService(intent)
+        playedViewModel.getPlayer()
+
+        binding.buttonPlay.setOnClickListener { button ->
+            playedViewModel.getPlayer()
+            lifecycleScope.launch {
+                playedViewModel.playUtils.collect { utils ->
+                    when (utils.playState) {
+                        is PlayState.IsPlaying -> {
+                            mediaPlayer.pause()
+                            button.setBackgroundColor(R.drawable.ic_baseline_play_arrow_24)
+                        }
+                        is PlayState.IsPaused -> {
+                            mediaPlayer.seekTo(mediaPlayer.currentPosition)
+                            mediaPlayer.start()
+                            button.setBackgroundResource(R.drawable.ic_baseline_pause_24)
+
+                        }
+                        is PlayState.IsStopped -> {
+                            Intent(context, PlayService::class.java).also { intent ->
+                                intent.putExtra(PLAY_EXTRA, contentUri)
+                                context?.startService(intent)
+                            }
+                            button.setBackgroundResource(R.drawable.ic_baseline_pause_24)
+                            playedViewModel.watchPlayBack()
+                        }
+                    }
+                }
             }
-            playedViewModel.watchPlayBack()
         }
 
         binding.buttonForward.setOnClickListener {
-            playedViewModel.watchPlayBack()
+            // TODO: Play Next Song
+        }
+        binding.buttonBackWard.setOnClickListener {
+            // TODO : Play Previous Song
         }
 
         lifecycleScope.launch {
@@ -53,12 +81,19 @@ class PlayedFragment : Fragment() {
                 binding.seekBar.progress = time.currentPosition!!
             }
         }
+        lifecycleScope.launch {
+            playedViewModel.playUtils.collect { utils ->
+                mediaPlayer = utils.player
+            }
+        }
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekbar: SeekBar?, currentPosition: Int, isChanged: Boolean) {
-                if (isChanged) {
-
-                }
+            override fun onProgressChanged(
+                seekbar: SeekBar?,
+                currentPosition: Int,
+                isChanged: Boolean
+            ) {
+                mediaPlayer.seekTo(currentPosition)
             }
 
             override fun onStartTrackingTouch(seekbar: SeekBar?) {

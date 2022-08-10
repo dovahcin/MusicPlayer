@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
 import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
+import com.example.musicplayer.features.features.playedmusic.PlayState
 
 class PlayService : Service(), MediaPlayer.OnPreparedListener {
     private var mediaPlayer: MediaPlayer? = null
@@ -40,6 +41,14 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
 
     fun getPlayer(): MediaPlayer {
         return mediaPlayer!!
+    }
+
+    fun getPlayState(): PlayState {
+        return when {
+            !mediaPlayer!!.isPlaying && mediaPlayer!!.currentPosition > 1 -> PlayState.IsPaused
+            !mediaPlayer!!.isPlaying && mediaPlayer!!.currentPosition < 1 -> PlayState.IsStopped
+            else -> PlayState.IsPlaying
+        }
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
