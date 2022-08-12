@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.example.musicplayer.R
 import com.example.musicplayer.databinding.FragmentPlayedBinding
 import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
 import com.example.musicplayer.features.features.playedmusic.service.PlayService
+import com.example.musicplayer.features.util.Musics
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,6 +25,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PlayedFragment : Fragment() {
     private var _binding: FragmentPlayedBinding? = null
     private val binding get() = _binding!!
+
+    private val TAG = "PlayedFragment"
 
     private lateinit var mediaPlayer: MediaPlayer
 

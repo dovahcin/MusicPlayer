@@ -1,5 +1,6 @@
 package com.example.musicplayer.features.features.playedmusic
 
+import android.app.Service
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.musicplayer.features.data.PlayedRepository
 import com.example.musicplayer.features.domain.PlayUtils
 import com.example.musicplayer.features.domain.Time
+import com.example.musicplayer.features.features.playedmusic.service.PlayService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +48,7 @@ class PlayedViewModel(private val playedRepository: PlayedRepository) : ViewMode
     fun getPlayer() {
         viewModelScope.launch {
             playedRepository.getPlayService().collect { service ->
+                _service.value = service
                 _playUtils.value = PlayUtils(
                     service.getPlayer(), service.getPlayState()
                 )
