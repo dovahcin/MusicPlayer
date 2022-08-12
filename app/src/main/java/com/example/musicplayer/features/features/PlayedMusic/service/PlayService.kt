@@ -6,7 +6,8 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
-import com.example.musicplayer.features.data.PlayedRepository.Companion.PLAY_EXTRA
+import com.example.musicplayer.features.data.PlayedRepository
+import com.example.musicplayer.features.features.playedmusic.PlayState
 
 class PlayService : Service(), MediaPlayer.OnPreparedListener {
     private var mediaPlayer: MediaPlayer? = null
@@ -26,23 +27,51 @@ class PlayService : Service(), MediaPlayer.OnPreparedListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        initializePlayer()
+        preparePlayer(intent)
+        return START_STICKY
+    }
+
+    private fun initializePlayer() {
         mediaPlayer?.setAudioAttributes(
             AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .build()
         )
-        mediaPlayer?.setDataSource(this, intent?.getParcelableExtra(PLAY_EXTRA)!!)
-        mediaPlayer?.prepareAsync()
+    }
 
-        return START_STICKY
+    private fun preparePlayer(intent: Intent?) {
+        mediaPlayer?.setDataSource(this, intent?.getParcelableExtra(PlayedRepository.PLAY_EXTRA)!!)
+        mediaPlayer?.prepareAsync()
+    }
+
+    fun playNextSong(intent: Intent?) {
+        mediaPlayer?.setDataSource(this, intent?.getParcelableExtra(PlayedRepository.PLAY_EXTRA)!!)
+        mediaPlayer?.prepareAsync()
+    }
+
+    fun stopPlayer() {
+        mediaPlayer?.stop()
+    }
+
+    fun releasePlayer() {
+        mediaPlayer?.release()
     }
 
     fun getPlayer(): MediaPlayer {
         return mediaPlayer!!
     }
 
-    override fun onPrepared(p0: MediaPlayer?) {
-        mediaPlayer?.start()
+    fun getPlayState(): PlayState {
+        return when {
+            !mediaPlayer!!.isPlaying && mediaPlayer!!.currentPosition > 1 -> PlayState.IsPaused
+            !mediaPlayer!!.isPlaying && mediaPlayer!!.currentPosition < 1 -> PlayState.IsStopped
+            else -> PlayState.IsPlaying
+        }
+    }
+
+    override fun onPrepared(player: MediaPlayer?) {
+        player?.start()
     }
 }

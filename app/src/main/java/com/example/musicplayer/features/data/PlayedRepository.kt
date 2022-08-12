@@ -6,7 +6,7 @@ import android.content.ServiceConnection
 import android.net.Uri
 import android.os.IBinder
 import com.example.musicplayer.features.features.playedmusic.service.PlayService
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
@@ -25,14 +25,13 @@ class PlayedRepository {
         appendedId
     )
 
-    fun getPlayer() = flow {
+    fun getPlayService() = flow {
         if (isBounded) {
             emit(
-                playService.getPlayer()
+                playService
             )
         }
-    }.flowOn(Dispatchers.IO)
-
+    }.flowOn(IO)
 
     fun getConnection() = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName?, service: IBinder?) {
